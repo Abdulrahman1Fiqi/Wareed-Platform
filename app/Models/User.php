@@ -5,7 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-class User extends Authenticatable
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable;
 
@@ -57,8 +58,5 @@ class User extends Authenticatable
         return $this->hasMany(DonorResponse::class, 'donor_id');
     }
 
-    public function notifications()
-    {
-        return $this->hasMany(\Illuminate\Notifications\DatabaseNotification::class, 'notifiable_id');
-    }
+    
 }

@@ -1,0 +1,1 @@
+<h1>Hospital Dashboard — coming soon</h1>
