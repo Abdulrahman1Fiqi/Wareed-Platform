@@ -14,6 +14,8 @@ use App\Http\Controllers\Donor\DashboardController as DonorDashboardController;
 use App\Http\Controllers\Donor\ProfileController as DonorProfileController;
 use App\Http\Controllers\Donor\NotificationController as DonorNotificationController;
 use App\Http\Controllers\Donor\RequestResponseController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
 
 
 Route::get('/', fn() => view('welcome'));
@@ -42,6 +44,25 @@ Route::post('/hospital/logout', [HospitalAuthController::class, 'logout'])
 
 Route::get('/admin/login', fn() => view('auth.admin-login'))->name('admin.login');
 Route::post('/admin/login', [AdminAuthController::class, 'login']);
+
+
+
+Route::middleware('auth')->group(function () {
+    Route::get('/email/verify', function () {
+        return view('auth.verify-email');
+    })->name('verification.notice');
+
+    Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+        $request->fulfill();
+        return redirect()->route('donor.dashboard');
+    })->middleware('signed')->name('verification.verify');
+
+    Route::post('/email/verification-notification', function (Request $request) {
+        $request->user()->sendEmailVerificationNotification();
+        return back()->with('success', 'Verification link sent.');
+    })->middleware('throttle:6,1')->name('verification.send');
+});
+
 
 
 Route::middleware(['donor', 'verified'])->prefix('donor')->name('donor.')->group(function () {
