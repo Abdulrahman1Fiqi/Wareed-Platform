@@ -6,6 +6,10 @@ use App\Http\Controllers\Auth\AdminAuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Hospital\DashboardController as HospitalDashboardController;
 use App\Http\Controllers\Hospital\BloodRequestController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\HospitalController as AdminHospitalController;
+use App\Http\Controllers\Admin\DonorController as AdminDonorController;
+use App\Http\Controllers\Admin\RequestController as AdminRequestController;
 
 Route::get('/', fn() => view('welcome'));
 
@@ -34,9 +38,6 @@ Route::post('/hospital/logout', [HospitalAuthController::class, 'logout'])
 Route::get('/admin/login', fn() => view('auth.admin-login'))->name('admin.login');
 Route::post('/admin/login', [AdminAuthController::class, 'login']);
 
-Route::post('/admin/logout', [AdminAuthController::class, 'logout'])
-    ->middleware('admin')
-    ->name('admin.logout');
 
 Route::get('/donor/dashboard', fn() => view('donor.dashboard'))
     ->name('donor.dashboard')
@@ -46,9 +47,31 @@ Route::get('/hospital/dashboard', fn() => view('hospital.dashboard'))
     ->name('hospital.dashboard')
     ->middleware('hospital');
 
-Route::get('/admin/dashboard', fn() => view('admin.dashboard'))
-    ->name('admin.dashboard')
-    ->middleware('admin');
+
+
+Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+
+    Route::prefix('hospitals')->name('hospitals.')->group(function () {
+        Route::get('/', [AdminHospitalController::class, 'index'])->name('index');
+        Route::get('/{hospital}', [AdminHospitalController::class, 'show'])->name('show');
+        Route::post('/{hospital}/approve', [AdminHospitalController::class, 'approve'])->name('approve');
+        Route::post('/{hospital}/reject', [AdminHospitalController::class, 'reject'])->name('reject');
+    });
+
+    Route::prefix('users')->name('users.')->group(function () {
+        Route::get('/', [AdminDonorController::class, 'index'])->name('index');
+        Route::get('/{user}', [AdminDonorController::class, 'show'])->name('show');
+        Route::post('/{user}/suspend', [AdminDonorController::class, 'suspend'])->name('suspend');
+    });
+
+    Route::prefix('requests')->name('requests.')->group(function () {
+        Route::get('/', [AdminRequestController::class, 'index'])->name('index');
+        Route::get('/{bloodRequest}', [AdminRequestController::class, 'show'])->name('show');
+    });
+
+    Route::post('/logout', [AdminAuthController::class, 'logout'])->name('logout');
+});
 
 
 
