@@ -10,6 +10,11 @@ use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\HospitalController as AdminHospitalController;
 use App\Http\Controllers\Admin\DonorController as AdminDonorController;
 use App\Http\Controllers\Admin\RequestController as AdminRequestController;
+use App\Http\Controllers\Donor\DashboardController as DonorDashboardController;
+use App\Http\Controllers\Donor\ProfileController as DonorProfileController;
+use App\Http\Controllers\Donor\NotificationController as DonorNotificationController;
+use App\Http\Controllers\Donor\RequestResponseController;
+
 
 Route::get('/', fn() => view('welcome'));
 
@@ -39,13 +44,19 @@ Route::get('/admin/login', fn() => view('auth.admin-login'))->name('admin.login'
 Route::post('/admin/login', [AdminAuthController::class, 'login']);
 
 
-Route::get('/donor/dashboard', fn() => view('donor.dashboard'))
-    ->name('donor.dashboard')
-    ->middleware(['donor', 'verified']);
+Route::middleware(['donor', 'verified'])->prefix('donor')->name('donor.')->group(function () {
+    Route::get('/dashboard', [DonorDashboardController::class, 'index'])->name('dashboard');
 
-Route::get('/hospital/dashboard', fn() => view('hospital.dashboard'))
-    ->name('hospital.dashboard')
-    ->middleware('hospital');
+    Route::get('/profile', [DonorProfileController::class, 'show'])->name('profile');
+    Route::put('/profile', [DonorProfileController::class, 'update'])->name('profile.update');
+    Route::post('/availability', [DonorProfileController::class, 'toggleAvailability'])->name('availability');
+
+    Route::get('/notifications', [DonorNotificationController::class, 'index'])->name('notifications');
+    Route::post('/notifications/{id}/read', [DonorNotificationController::class, 'markAsRead'])->name('notifications.read');
+
+    Route::get('/requests/{bloodRequest}', [RequestResponseController::class, 'show'])->name('requests.respond');
+    Route::post('/requests/{bloodRequest}/respond', [RequestResponseController::class, 'respond'])->name('requests.respond.submit');
+});
 
 
 
