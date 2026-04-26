@@ -11,6 +11,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use App\Events\BloodRequestCreated;
 
 class MatchDonorsJob implements ShouldQueue
 {
@@ -60,6 +61,9 @@ class MatchDonorsJob implements ShouldQueue
             ]);
 
             $donor->notify(new BloodRequestNotification($this->bloodRequest));
+
+            broadcast(new BloodRequestCreated($this->bloodRequest, $donor));
+
         }
     }
 }

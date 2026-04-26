@@ -1,21 +1,28 @@
 <?php
 
+use App\Http\Controllers\Auth\AdminAuthController;
 use App\Http\Controllers\Auth\DonorAuthController;
 use App\Http\Controllers\Auth\HospitalAuthController;
-use App\Http\Controllers\Auth\AdminAuthController;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Hospital\DashboardController as HospitalDashboardController;
-use App\Http\Controllers\Hospital\BloodRequestController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
-use App\Http\Controllers\Admin\HospitalController as AdminHospitalController;
 use App\Http\Controllers\Admin\DonorController as AdminDonorController;
+use App\Http\Controllers\Admin\HospitalController as AdminHospitalController;
 use App\Http\Controllers\Admin\RequestController as AdminRequestController;
 use App\Http\Controllers\Donor\DashboardController as DonorDashboardController;
-use App\Http\Controllers\Donor\ProfileController as DonorProfileController;
 use App\Http\Controllers\Donor\NotificationController as DonorNotificationController;
+use App\Http\Controllers\Donor\ProfileController as DonorProfileController;
 use App\Http\Controllers\Donor\RequestResponseController;
+use App\Http\Controllers\Hospital\BloodRequestController;
+use App\Http\Controllers\Hospital\DashboardController as HospitalDashboardController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Broadcast;
+use Illuminate\Support\Facades\Route;
+
+Route::post('/broadcasting/auth', function (Request $request) {
+    return Broadcast::auth($request);
+})->middleware(['web', 'auth:web,hospital'])->name('broadcasting.auth');
+
+require base_path('routes/channels.php');
 
 
 Route::get('/', fn() => view('welcome'));
@@ -45,8 +52,6 @@ Route::post('/hospital/logout', [HospitalAuthController::class, 'logout'])
 Route::get('/admin/login', fn() => view('auth.admin-login'))->name('admin.login');
 Route::post('/admin/login', [AdminAuthController::class, 'login']);
 
-
-
 Route::middleware('auth')->group(function () {
     Route::get('/email/verify', function () {
         return view('auth.verify-email');
@@ -63,23 +68,16 @@ Route::middleware('auth')->group(function () {
     })->middleware('throttle:6,1')->name('verification.send');
 });
 
-
-
 Route::middleware(['donor', 'verified'])->prefix('donor')->name('donor.')->group(function () {
     Route::get('/dashboard', [DonorDashboardController::class, 'index'])->name('dashboard');
-
     Route::get('/profile', [DonorProfileController::class, 'show'])->name('profile');
     Route::put('/profile', [DonorProfileController::class, 'update'])->name('profile.update');
     Route::post('/availability', [DonorProfileController::class, 'toggleAvailability'])->name('availability');
-
     Route::get('/notifications', [DonorNotificationController::class, 'index'])->name('notifications');
     Route::post('/notifications/{id}/read', [DonorNotificationController::class, 'markAsRead'])->name('notifications.read');
-
     Route::get('/requests/{bloodRequest}', [RequestResponseController::class, 'show'])->name('requests.respond');
     Route::post('/requests/{bloodRequest}/respond', [RequestResponseController::class, 'respond'])->name('requests.respond.submit');
 });
-
-
 
 Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
@@ -104,10 +102,6 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
 
     Route::post('/logout', [AdminAuthController::class, 'logout'])->name('logout');
 });
-
-
-
-
 
 Route::middleware('hospital')->prefix('hospital')->name('hospital.')->group(function () {
     Route::get('/dashboard', [HospitalDashboardController::class, 'index'])->name('dashboard');

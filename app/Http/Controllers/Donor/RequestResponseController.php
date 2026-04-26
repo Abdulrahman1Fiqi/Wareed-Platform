@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\BloodRequest;
 use App\Models\DonorResponse;
 use Illuminate\Http\Request;
+use App\Events\DonorResponded;
+
 
 class RequestResponseController extends Controller
 {
@@ -41,6 +43,9 @@ class RequestResponseController extends Controller
             'status'       => $request->action,
             'responded_at' => now(),
         ]);
+
+        broadcast(new DonorResponded($donorResponse->load('donor', 'bloodRequest')));
+
 
         if ($request->action === 'accepted') {
             return redirect()->route('donor.dashboard')
