@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\BloodRequest;
 use App\Models\DonorResponse;
 use Illuminate\Http\Request;
+use App\Jobs\MatchDonorsJob;
+use App\Jobs\SetDonorCooldownJob;
 
 class BloodRequestController extends Controller
 {
@@ -52,6 +54,8 @@ class BloodRequestController extends Controller
             'expires_at'  => $expiresAt,
         ]);
 
+        MatchDonorsJob::dispatch($bloodRequest);
+
         return redirect()->route('hospital.requests.show', $bloodRequest)
             ->with('success', 'Blood request created. Matching donors are being notified.');
     }
@@ -96,7 +100,13 @@ class BloodRequestController extends Controller
         ]);
 
         $donorResponse->donor->increment('donation_count');
-        $donorResponse->donor->update(['last_donation_date' => today()]);
+        $donorResponse->donor->update([
+            'last_donation_date' => today(),
+            'status'             => 'on_cooldown',
+            ]);
+
+        SetDonorCooldownJob::dispatch($donorResponse->donor)
+            ->delay(now()->addDays(56));
 
         $totalConfirmed = $bloodRequest->donorResponses()->where('status', 'confirmed')->count();
 
