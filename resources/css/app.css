@@ -1,3 +1,34 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    .btn-primary {
+        @apply bg-blood-500 hover:bg-blood-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200;
+    }
+
+    .btn-secondary {
+        @apply bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded-lg transition-colors duration-200;
+    }
+
+    .btn-danger {
+        @apply bg-red-700 hover:bg-red-800 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200;
+    }
+
+    .card {
+        @apply bg-white rounded-xl shadow-sm border border-gray-100 p-6;
+    }
+
+    .badge-new      { @apply bg-gray-100 text-gray-600 text-xs font-semibold px-2 py-1 rounded-full; }
+    .badge-active   { @apply bg-blue-100 text-blue-700 text-xs font-semibold px-2 py-1 rounded-full; }
+    .badge-trusted  { @apply bg-green-100 text-green-700 text-xs font-semibold px-2 py-1 rounded-full; }
+    .badge-hero     { @apply bg-yellow-100 text-yellow-700 text-xs font-semibold px-2 py-1 rounded-full; }
+
+    .status-active    { @apply bg-green-100 text-green-700 text-xs font-medium px-2 py-1 rounded-full; }
+    .status-fulfilled { @apply bg-blue-100 text-blue-700 text-xs font-medium px-2 py-1 rounded-full; }
+    .status-expired   { @apply bg-gray-100 text-gray-500 text-xs font-medium px-2 py-1 rounded-full; }
+    .status-cancelled { @apply bg-red-100 text-red-600 text-xs font-medium px-2 py-1 rounded-full; }
+    .status-critical  { @apply bg-red-100 text-red-700 text-xs font-medium px-2 py-1 rounded-full; }
+    .status-urgent    { @apply bg-orange-100 text-orange-700 text-xs font-medium px-2 py-1 rounded-full; }
+    .status-standard  { @apply bg-yellow-100 text-yellow-700 text-xs font-medium px-2 py-1 rounded-full; }
+}

@@ -58,5 +58,25 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(DonorResponse::class, 'donor_id');
     }
 
+
+    public function badge(): string
+    {
+        return match(true) {
+            $this->donation_count >= 10 => 'Hero Donor',
+            $this->donation_count >= 3  => 'Trusted Donor',
+            $this->donation_count >= 1  => 'Active Donor',
+            default                     => 'New Donor',
+        };
+    }
+
+    public function badgeClass(): string
+    {
+        return match($this->badge()) {
+            'Hero Donor'    => 'badge-hero',
+            'Trusted Donor' => 'badge-trusted',
+            'Active Donor'  => 'badge-active',
+            default         => 'badge-new',
+        };
+    }
     
 }

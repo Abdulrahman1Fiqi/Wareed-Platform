@@ -24,19 +24,10 @@ class DashboardController extends Controller
             ->latest()
             ->paginate(10);
 
-        $badge = $this->resolveBadge($donor->donation_count);
 
-        return view('donor.dashboard', compact('donor', 'pendingResponses', 'donationHistory', 'badge'));
+        return view('donor.dashboard', compact('donor', 'pendingResponses', 'donationHistory'));
     }
 
-    private function resolveBadge(int $count): string
-    {
-        return match(true) {
-            $count >= 10 => 'Hero Donor',
-            $count >= 3  => 'Trusted Donor',
-            $count >= 1  => 'Active Donor',
-            default      => 'New Donor',
-        };
-    }
+    
     
 }
