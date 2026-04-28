@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wareed — Register</title>
-    @vite(['resources/css/app.css'])
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="h-full flex items-center justify-center py-10">
     <div class="w-full max-w-md">
@@ -73,18 +73,12 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">City</label>
-                        <input type="text" name="city" value="{{ old('city') }}" required
-                            class="w-full rounded-lg border-gray-300 focus:border-blood-500 focus:ring-blood-500">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">District</label>
-                        <input type="text" name="district" value="{{ old('district') }}" required
-                            class="w-full rounded-lg border-gray-300 focus:border-blood-500 focus:ring-blood-500">
-                    </div>
-                </div>
+                
+                    <x-city-district-select
+                        :selectedCity="old('city', '')"
+                        :selectedDistrict="old('district', '')"
+                    />
+                
 
                 <button type="submit" class="btn-primary w-full text-center">
                     Create Account

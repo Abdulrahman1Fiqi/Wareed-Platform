@@ -73,18 +73,10 @@
                     class="w-full rounded-lg border-gray-300 focus:border-blood-500 focus:ring-blood-500">
             </div>
 
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">City</label>
-                    <input type="text" name="city" value="{{ old('city', $donor->city) }}" required
-                        class="w-full rounded-lg border-gray-300 focus:border-blood-500 focus:ring-blood-500">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">District</label>
-                    <input type="text" name="district" value="{{ old('district', $donor->district) }}" required
-                        class="w-full rounded-lg border-gray-300 focus:border-blood-500 focus:ring-blood-500">
-                </div>
-            </div>
+            <x-city-district-select
+                :selectedCity="old('city', $donor->city ?? '')"
+                :selectedDistrict="old('district', $donor->district ?? '')"
+            />
 
             <button type="submit" class="btn-primary w-full text-center">Save Changes</button>
         </form>
