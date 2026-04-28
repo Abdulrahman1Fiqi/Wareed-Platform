@@ -24,6 +24,7 @@
             <p class="text-sm text-gray-500 mt-1">{{ $donor->city }}, {{ $donor->district }}</p>
             <div class="flex items-center gap-2 mt-2">
                 <span class="bg-blood-500 text-white text-xs font-bold px-2 py-1 rounded-full">{{ $donor->blood_type }}</span>
+                <span class="{{ $donor->badgeClass() }}">{{ $donor->badge() }}</span>
                 <span class="{{ $donor->status === 'available' ? 'status-active' : 'status-cancelled' }}">
                     {{ ucfirst($donor->status) }}
                 </span>
