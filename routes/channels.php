@@ -9,11 +9,5 @@ Broadcast::channel('donor.{id}', function (User $user, int $id) {
 });
 
 Broadcast::channel('hospital.{id}', function ($user, int $id) {
-    $hospital = auth('hospital')->user();
-
-    if ($hospital instanceof Hospital) {
-        return $hospital->id === $id;
-    }
-    
-    return false;
+    return $user instanceof Hospital && $user->id === $id;
 });
