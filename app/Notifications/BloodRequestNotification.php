@@ -7,6 +7,8 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Messages\BroadcastMessage;
+
 
 class BloodRequestNotification extends Notification
 {
@@ -19,6 +21,19 @@ class BloodRequestNotification extends Notification
         return ['database', 'broadcast'];
     }
 
+    public function toBroadcast(object $notifiable): BroadcastMessage
+    {
+        return new BroadcastMessage([
+            'blood_request_id' => $this->bloodRequest->id,
+            'hospital_name'    => $this->bloodRequest->hospital->name,
+            'blood_type'       => $this->bloodRequest->blood_type,
+            'urgency'          => $this->bloodRequest->urgency,
+            'city'             => $this->bloodRequest->hospital->city,
+            'expires_at'       => $this->bloodRequest->expires_at->toDateTimeString(),
+            'message'          => 'Emergency ' . $this->bloodRequest->blood_type . ' blood request from ' . $this->bloodRequest->hospital->name,
+        ]);
+    }
+    
     public function toDatabase(object $notifiable): array
     {
         return [

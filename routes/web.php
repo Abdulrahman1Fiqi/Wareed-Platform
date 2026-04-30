@@ -18,11 +18,27 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Route;
 
-Route::post('/broadcasting/auth', function (Request $request) {
-    return Broadcast::auth($request);
-})->middleware(['web', 'auth:web,hospital'])->name('broadcasting.auth');
 
-require base_path('routes/channels.php');
+Route::post('/broadcasting/auth', function (Request $request) {
+    \Log::info('Broadcasting auth hit', [
+        'web_check'      => auth('web')->check(),
+        'hospital_check' => auth('hospital')->check(),
+        'web_user'       => auth('web')->user()?->email,
+        'hospital_user'  => auth('hospital')->user()?->email,
+        'channel'        => $request->channel_name,
+    ]);
+
+    if (auth('hospital')->check()) {
+        $request->setUserResolver(fn() => auth('hospital')->user());
+    } elseif (auth('web')->check()) {
+        $request->setUserResolver(fn() => auth('web')->user());
+    } else {
+        \Log::info('Broadcasting auth: no user found - aborting 403');
+        abort(403);
+    }
+
+    return Broadcast::auth($request);
+})->middleware('web');
 
 
 Route::get('/', fn() => view('welcome'));
@@ -115,3 +131,6 @@ Route::middleware('hospital')->prefix('hospital')->name('hospital.')->group(func
         Route::post('/{bloodRequest}/responses/{donorResponse}/confirm', [BloodRequestController::class, 'confirmDonation'])->name('confirmDonation');
     });
 });
+
+
+require base_path('routes/channels.php');
