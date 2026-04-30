@@ -17,7 +17,14 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PushSubscriptionController;
 
+
+Route::get('/push/vapid-public-key', function () {
+    return response()->json(['publicKey' => config('services.vapid.public_key')]);
+});
+
+Route::middleware('auth')->post('/push/subscribe', [PushSubscriptionController::class, 'store'])->name('push.subscribe');
 
 Route::post('/broadcasting/auth', function (Request $request) {
     \Log::info('Broadcasting auth hit', [

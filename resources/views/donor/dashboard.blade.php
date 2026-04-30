@@ -4,7 +4,17 @@
 
 @section('nav-links')
     <a href="{{ route('donor.profile') }}" class="text-red-100 hover:text-white text-sm">Profile</a>
-    <a href="{{ route('donor.notifications') }}" class="text-red-100 hover:text-white text-sm">Notifications</a>
+    <a href="{{ route('donor.notifications') }}" class="text-red-100 hover:text-white text-sm relative">
+        Notifications
+        @php $unread = auth()->user()->unreadNotifications()->count(); @endphp
+        @if ($unread > 0)
+            <span id="unread-badge" class="absolute -top-2 -right-3 bg-white text-blood-500 text-xs font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                {{ $unread }}
+            </span>
+        @else
+            <span id="unread-badge" class="absolute -top-2 -right-3 bg-white text-blood-500 text-xs font-bold w-4 h-4 rounded-full items-center justify-center" style="display:none">0</span>
+        @endif
+    </a>
 @endsection
 
 @section('nav-logout')
