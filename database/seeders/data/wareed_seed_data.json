@@ -1,0 +1,358 @@
+{
+  "admins": [
+    {
+      "name": "Wareed Admin",
+      "email": "admin@wareed.com",
+      "password": "password123",
+      "role": "admin",
+      "email_verified_at": "2024-01-01 00:00:00"
+    }
+  ],
+
+  "hospitals": [
+    {
+      "name": "Cairo University Hospital",
+      "email": "info@cuh.edu.eg",
+      "password": "password123",
+      "phone": "0223638000",
+      "city": "Cairo",
+      "district": "Downtown",
+      "license_number": "MOH-CAI-001",
+      "status": "approved"
+    },
+    {
+      "name": "Ain Shams University Hospital",
+      "email": "contact@asuh.edu.eg",
+      "password": "password123",
+      "phone": "0224821000",
+      "city": "Cairo",
+      "district": "Ain Shams",
+      "license_number": "MOH-CAI-002",
+      "status": "approved"
+    },
+    {
+      "name": "Alexandria Main Hospital",
+      "email": "admin@alexhosp.eg",
+      "password": "password123",
+      "phone": "0345621000",
+      "city": "Alexandria",
+      "district": "Smouha",
+      "license_number": "MOH-ALX-001",
+      "status": "approved"
+    },
+    {
+      "name": "Mansoura University Hospital",
+      "email": "info@muh.edu.eg",
+      "password": "password123",
+      "phone": "0502244000",
+      "city": "Dakahlia",
+      "district": "Mansoura",
+      "license_number": "MOH-DAK-001",
+      "status": "approved"
+    },
+    {
+      "name": "Beheira General Hospital",
+      "email": "bgh@health.gov.eg",
+      "password": "password123",
+      "phone": "0453222000",
+      "city": "Beheira",
+      "district": "Damanhur",
+      "license_number": "MOH-BEH-001",
+      "status": "approved"
+    },
+    {
+      "name": "El Salam International Hospital",
+      "email": "contact@elsalam.eg",
+      "password": "password123",
+      "phone": "0224166000",
+      "city": "Cairo",
+      "district": "Nasr City",
+      "license_number": "MOH-CAI-003",
+      "status": "pending"
+    },
+    {
+      "name": "Tanta University Hospital",
+      "email": "info@tantahosp.edu.eg",
+      "password": "password123",
+      "phone": "0403317000",
+      "city": "Gharbia",
+      "district": "Tanta",
+      "license_number": "MOH-GHR-001",
+      "status": "pending"
+    }
+  ],
+
+  "donors": [
+    {
+      "name": "Ahmed Mohamed Ali",
+      "email": "ahmed.ali@gmail.com",
+      "password": "password123",
+      "phone": "01012345678",
+      "blood_type": "O+",
+      "city": "Cairo",
+      "district": "Nasr City",
+      "status": "available",
+      "donation_count": 12,
+      "last_donation_date": "2024-09-15"
+    },
+    {
+      "name": "Sara Hassan Ibrahim",
+      "email": "sara.hassan@gmail.com",
+      "password": "password123",
+      "phone": "01123456789",
+      "blood_type": "A+",
+      "city": "Cairo",
+      "district": "Heliopolis",
+      "status": "available",
+      "donation_count": 5,
+      "last_donation_date": "2024-10-20"
+    },
+    {
+      "name": "Omar Khaled Mahmoud",
+      "email": "omar.khaled@gmail.com",
+      "password": "password123",
+      "phone": "01234567890",
+      "blood_type": "B+",
+      "city": "Cairo",
+      "district": "Maadi",
+      "status": "available",
+      "donation_count": 3,
+      "last_donation_date": "2024-08-10"
+    },
+    {
+      "name": "Nour Tarek Saad",
+      "email": "nour.tarek@gmail.com",
+      "password": "password123",
+      "phone": "01512345678",
+      "blood_type": "AB+",
+      "city": "Cairo",
+      "district": "Ain Shams",
+      "status": "available",
+      "donation_count": 1,
+      "last_donation_date": "2024-11-05"
+    },
+    {
+      "name": "Youssef Adel Farouk",
+      "email": "youssef.adel@gmail.com",
+      "password": "password123",
+      "phone": "01001234567",
+      "blood_type": "O-",
+      "city": "Cairo",
+      "district": "Downtown",
+      "status": "available",
+      "donation_count": 8,
+      "last_donation_date": "2024-07-22"
+    },
+    {
+      "name": "Mona Samir Nasser",
+      "email": "mona.samir@gmail.com",
+      "password": "password123",
+      "phone": "01112345678",
+      "blood_type": "A-",
+      "city": "Alexandria",
+      "district": "Smouha",
+      "status": "available",
+      "donation_count": 4,
+      "last_donation_date": "2024-09-30"
+    },
+    {
+      "name": "Karim Ashraf Zaki",
+      "email": "karim.ashraf@gmail.com",
+      "password": "password123",
+      "phone": "01287654321",
+      "blood_type": "B-",
+      "city": "Alexandria",
+      "district": "Gleem",
+      "status": "available",
+      "donation_count": 2,
+      "last_donation_date": "2024-10-15"
+    },
+    {
+      "name": "Hana Wael Bishara",
+      "email": "hana.wael@gmail.com",
+      "password": "password123",
+      "phone": "01598765432",
+      "blood_type": "AB-",
+      "city": "Dakahlia",
+      "district": "Mansoura",
+      "status": "available",
+      "donation_count": 6,
+      "last_donation_date": "2024-08-28"
+    },
+    {
+      "name": "Tamer Hussein Gouda",
+      "email": "tamer.hussein@gmail.com",
+      "password": "password123",
+      "phone": "01023456789",
+      "blood_type": "O+",
+      "city": "Beheira",
+      "district": "Damanhur",
+      "status": "available",
+      "donation_count": 0,
+      "last_donation_date": null
+    },
+    {
+      "name": "Rania Essam Lotfy",
+      "email": "rania.essam@gmail.com",
+      "password": "password123",
+      "phone": "01134567890",
+      "blood_type": "A+",
+      "city": "Beheira",
+      "district": "Kafr El Dawwar",
+      "status": "available",
+      "donation_count": 3,
+      "last_donation_date": "2024-06-10"
+    },
+    {
+      "name": "Mahmoud Fathy Salem",
+      "email": "mahmoud.fathy@gmail.com",
+      "password": "password123",
+      "phone": "01245678901",
+      "blood_type": "B+",
+      "city": "Gharbia",
+      "district": "Tanta",
+      "status": "available",
+      "donation_count": 7,
+      "last_donation_date": "2024-09-05"
+    },
+    {
+      "name": "Dina Sherif Barakat",
+      "email": "dina.sherif@gmail.com",
+      "password": "password123",
+      "phone": "01356789012",
+      "blood_type": "O+",
+      "city": "Cairo",
+      "district": "Zamalek",
+      "status": "on_cooldown",
+      "donation_count": 2,
+      "last_donation_date": "2025-02-28"
+    },
+    {
+      "name": "Hassan Nabil Osman",
+      "email": "hassan.nabil@gmail.com",
+      "password": "password123",
+      "phone": "01467890123",
+      "blood_type": "A+",
+      "city": "Cairo",
+      "district": "Shubra",
+      "status": "unavailable",
+      "donation_count": 1,
+      "last_donation_date": "2024-12-01"
+    },
+    {
+      "name": "Layla Ibrahim Morsi",
+      "email": "layla.ibrahim@gmail.com",
+      "password": "password123",
+      "phone": "01578901234",
+      "blood_type": "AB+",
+      "city": "Alexandria",
+      "district": "Montaza",
+      "status": "available",
+      "donation_count": 9,
+      "last_donation_date": "2024-08-01"
+    },
+    {
+      "name": "Ziad Amr Helmy",
+      "email": "ziad.amr@gmail.com",
+      "password": "password123",
+      "phone": "01689012345",
+      "blood_type": "O-",
+      "city": "Cairo",
+      "district": "New Cairo",
+      "status": "available",
+      "donation_count": 15,
+      "last_donation_date": "2024-07-01"
+    }
+  ],
+
+  "blood_requests": [
+    {
+      "hospital_index": 0,
+      "blood_type": "O+",
+      "units_needed": 3,
+      "urgency": "critical",
+      "status": "fulfilled",
+      "contact_person": "Dr. Amira Salah",
+      "contact_phone": "01001112222",
+      "notes": "Urgent surgery patient — ICU unit 3",
+      "days_ago": 30
+    },
+    {
+      "hospital_index": 1,
+      "blood_type": "A+",
+      "units_needed": 2,
+      "urgency": "urgent",
+      "status": "fulfilled",
+      "contact_person": "Dr. Khaled Nour",
+      "contact_phone": "01023334444",
+      "notes": "Post-operative patient needs transfusion",
+      "days_ago": 25
+    },
+    {
+      "hospital_index": 0,
+      "blood_type": "B+",
+      "units_needed": 1,
+      "urgency": "standard",
+      "status": "expired",
+      "contact_person": "Nurse Fatma Ali",
+      "contact_phone": "01045556666",
+      "notes": null,
+      "days_ago": 20
+    },
+    {
+      "hospital_index": 2,
+      "blood_type": "AB-",
+      "units_needed": 2,
+      "urgency": "critical",
+      "status": "fulfilled",
+      "contact_person": "Dr. Mohamed Rashad",
+      "contact_phone": "01067778888",
+      "notes": "Rare blood type needed immediately — trauma unit",
+      "days_ago": 15
+    },
+    {
+      "hospital_index": 3,
+      "blood_type": "O-",
+      "units_needed": 4,
+      "urgency": "urgent",
+      "status": "partially_fulfilled",
+      "contact_person": "Dr. Heba Mostafa",
+      "contact_phone": "01089990000",
+      "notes": "Multiple trauma patients — accident victims",
+      "days_ago": 5
+    },
+    {
+      "hospital_index": 4,
+      "blood_type": "A+",
+      "units_needed": 2,
+      "urgency": "urgent",
+      "status": "active",
+      "contact_person": "Dr. Walid Hassan",
+      "contact_phone": "01011112222",
+      "notes": "Scheduled surgery — patient prep",
+      "days_ago": 0
+    },
+    {
+      "hospital_index": 0,
+      "blood_type": "O+",
+      "units_needed": 3,
+      "urgency": "critical",
+      "status": "active",
+      "contact_person": "Dr. Amira Salah",
+      "contact_phone": "01001112222",
+      "notes": "Emergency — please respond immediately",
+      "days_ago": 0
+    },
+    {
+      "hospital_index": 1,
+      "blood_type": "B-",
+      "units_needed": 1,
+      "urgency": "standard",
+      "status": "cancelled",
+      "contact_person": "Dr. Khaled Nour",
+      "contact_phone": "01023334444",
+      "notes": null,
+      "days_ago": 10
+    }
+  ]
+}
