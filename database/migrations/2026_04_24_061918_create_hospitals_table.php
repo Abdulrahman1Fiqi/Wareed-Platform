@@ -24,8 +24,7 @@ return new class extends Migration
             $table->string('district', 100);
             $table->string('license_number', 100)->unique();
 
-            $table->enum('status', ['pending', 'approved', 'rejected', 'suspended'])
-                  ->default('pending');
+            $table->string('status', 30)->default('pending');
 
             $table->timestamp('approved_at')->nullable(); 
             $table->rememberToken(); 

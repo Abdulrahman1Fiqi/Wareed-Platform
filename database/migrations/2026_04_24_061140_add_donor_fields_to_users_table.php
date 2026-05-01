@@ -9,9 +9,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->enum('role', ['donor', 'admin'])->default('donor')->after('email');
+            $table->string('role', 30)->default('donor')->after('email');
 
-            $table->enum('blood_type', ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'])
+            $table->string('blood_type', 5)
                   ->nullable()
                   ->after('role');
 
@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('city', 100)->nullable()->after('phone');
             $table->string('district', 100)->nullable()->after('city');
 
-            $table->enum('status', ['available', 'unavailable', 'on_cooldown'])
+            $table->string('status', 30)
                   ->default('available')
                   ->after('district');
 

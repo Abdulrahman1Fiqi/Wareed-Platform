@@ -19,7 +19,7 @@ return new class extends Migration
                   ->constrained('users')
                   ->cascadeOnDelete();
 
-            $table->enum('status', ['notified', 'accepted', 'declined', 'confirmed'])
+            $table->string('status', 30)
                   ->default('notified');
 
             $table->timestamp('responded_at')->nullable(); 

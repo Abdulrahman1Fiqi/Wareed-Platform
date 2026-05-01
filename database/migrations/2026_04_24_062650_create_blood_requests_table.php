@@ -18,19 +18,13 @@ return new class extends Migration
                   ->constrained('hospitals')
                   ->cascadeOnDelete();
 
-            $table->enum('blood_type', ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']);
+            $table->string('blood_type', 5);
             $table->unsignedInteger('units_needed')->default(1);
 
-            $table->enum('urgency', ['critical', 'urgent', 'standard'])
+            $table->string('urgency', 20)->default('urgent')
                   ->default('urgent');
 
-            $table->enum('status', [
-                'active',
-                'partially_fulfilled',
-                'fulfilled',
-                'expired',
-                'cancelled',
-            ])->default('active');
+            $table->string('status', 30)->default('active');
 
             $table->string('contact_person', 100);
             $table->string('contact_phone', 20);
