@@ -26,62 +26,80 @@ class MatchDonorsJob implements ShouldQueue
     public function __construct(public BloodRequest $bloodRequest) {}
 
     public function handle(): void
-{
-    $this->bloodRequest->load('hospital');
+    {
+        $this->bloodRequest->load('hospital');
 
-    if (!$this->bloodRequest->isActive()) {
-        \Log::info('MatchDonorsJob: request not active', ['id' => $this->bloodRequest->id]);
-        return;
-    }
+        if (!$this->bloodRequest->isActive()) {
+            \Log::info('MatchDonorsJob: request not active', ['id' => $this->bloodRequest->id]);
+            return;
+        }
 
-    $compatibleTypes = $this->bloodRequest->compatibleBloodTypes();
-    $hospital = $this->bloodRequest->hospital;
+        $compatibleTypes  = $this->bloodRequest->compatibleBloodTypes();
+        $hospital         = $this->bloodRequest->hospital;
 
-    \Log::info('MatchDonorsJob: searching donors', [
-        'hospital_city'    => $hospital->city,
-        'blood_type'       => $this->bloodRequest->blood_type,
-        'compatible_types' => $compatibleTypes,
-    ]);
-
-    $donors = User::where('role', 'donor')
-        ->where('status', 'available')
-        ->where('city', $hospital->city)
-        ->whereIn('blood_type', $compatibleTypes)
-        ->where(function ($query) {
-            $query->whereNull('last_donation_date')
-                ->orWhere('last_donation_date', '<=', now()->subDays(56));
-        })
-        ->whereNotIn('id', function ($query) {
-            $query->select('donor_id')
-                ->from('donor_responses')
-                ->where('blood_request_id', $this->bloodRequest->id);
-        })
-        ->orderByRaw("CASE WHEN district = ? THEN 0 ELSE 1 END", [
-            $hospital->district
-        ])
-        ->orderByRaw("last_donation_date ASC NULLS FIRST")
-        ->get();
-
-    \Log::info('MatchDonorsJob: donors found', ['count' => $donors->count()]);
-
-    if ($donors->isEmpty()) {
-        return;
-    }
-
-    foreach ($donors as $donor) {
-        DonorResponse::create([
-            'blood_request_id' => $this->bloodRequest->id,
-            'donor_id'         => $donor->id,
-            'status'           => 'notified',
+        \Log::info('MatchDonorsJob: searching donors', [
+            'hospital_city'    => $hospital->city,
+            'blood_type'       => $this->bloodRequest->blood_type,
+            'compatible_types' => $compatibleTypes,
         ]);
 
-        $donor->notify(new BloodRequestNotification($this->bloodRequest));
-        broadcast(new BloodRequestCreated($this->bloodRequest, $donor));
-        $this->sendPushNotification($donor, $this->bloodRequest);
+        $existingDonorIds = DonorResponse::where('blood_request_id', $this->bloodRequest->id)
+            ->pluck('donor_id')
+            ->toArray();
 
-        \Log::info('MatchDonorsJob: donor notified', ['donor' => $donor->name]);
+        $donors = User::where('role', 'donor')
+            ->where('status', 'available')
+            ->where('city', $hospital->city)
+            ->where(function ($query) use ($compatibleTypes) {
+                $query->whereIn('blood_type', $compatibleTypes);
+            })
+            ->where(function ($query) {
+                $query->whereNull('last_donation_date')
+                    ->orWhere('last_donation_date', '<=', now()->subDays(56));
+            })
+            ->when(!empty($existingDonorIds), function ($query) use ($existingDonorIds) {
+                $query->whereNotIn('id', $existingDonorIds);
+            })
+            ->orderByRaw("CASE WHEN district = ? THEN 0 ELSE 1 END", [
+                $hospital->district
+            ])
+            ->orderByRaw('last_donation_date ASC NULLS FIRST')
+            ->get();
+
+        \Log::info('MatchDonorsJob: donors found', ['count' => $donors->count()]);
+
+        if ($donors->isEmpty()) {
+            \Log::info('MatchDonorsJob: no matching donors', [
+                'hospital_city' => $hospital->city,
+                'blood_type'    => $this->bloodRequest->blood_type,
+            ]);
+            return;
+        }
+
+        foreach ($donors as $donor) {
+            try {
+                DonorResponse::create([
+                    'blood_request_id' => $this->bloodRequest->id,
+                    'donor_id'         => $donor->id,
+                    'status'           => 'notified',
+                ]);
+
+                $donor->notify(new BloodRequestNotification($this->bloodRequest));
+                broadcast(new BloodRequestCreated($this->bloodRequest, $donor));
+                $this->sendPushNotification($donor, $this->bloodRequest);
+
+                \Log::info('MatchDonorsJob: donor notified', [
+                    'donor_id'   => $donor->id,
+                    'donor_name' => $donor->name,
+                ]);
+            } catch (\Exception $e) {
+                \Log::error('MatchDonorsJob: failed to notify donor', [
+                    'donor_id' => $donor->id,
+                    'error'    => $e->getMessage(),
+                ]);
+            }
+        }
     }
-}
 
     private function sendPushNotification($donor, $bloodRequest): void
     {
@@ -122,5 +140,4 @@ class MatchDonorsJob implements ShouldQueue
 
         $webPush->flush();
     }
-
 }
