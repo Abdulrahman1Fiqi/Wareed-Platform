@@ -32,7 +32,7 @@ class HospitalController extends Controller
     {
         $hospital->update([
             'status'      => 'approved',
-            'approved_by' => auth()->user()->id,
+            'approved_by' => (int) auth()->user()->id,
             'approved_at' => now(),
         ]);
 
