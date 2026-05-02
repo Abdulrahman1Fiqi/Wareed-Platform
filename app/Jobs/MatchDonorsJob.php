@@ -52,7 +52,7 @@ class MatchDonorsJob implements ShouldQueue
             ->orderByRaw("CASE WHEN district = ? THEN 0 ELSE 1 END", [
                 $hospital->district
             ])
-            ->orderBy('last_donation_date')
+            ->orderByRaw("last_donation_date ASC NULLS FIRST")
             ->get();
 
         if ($donors->isEmpty()) {
