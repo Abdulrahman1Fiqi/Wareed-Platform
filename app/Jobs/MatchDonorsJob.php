@@ -27,6 +27,8 @@ class MatchDonorsJob implements ShouldQueue
 
     public function handle(): void
     {
+        \Log::info('MatchDonorsJob: STARTED', ['request_id' => $this->bloodRequest->id]);
+
         $this->bloodRequest->load('hospital');
 
         if (!$this->bloodRequest->isActive()) {
