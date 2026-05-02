@@ -1,0 +1,7 @@
+{
+    "workers": [
+        {
+            "command": "php artisan queue:work --sleep=1 --tries=3 --timeout=60 --max-time=3600"
+        }
+    ]
+}
