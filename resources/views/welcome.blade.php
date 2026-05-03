@@ -1,9 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Wareed — Blood Donation Network</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Wareed">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#C0392B">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/icons/icon-192.png">
+    <title>Wareed — Blood Donation Network</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -907,20 +915,35 @@
     transform: translateY(0);
   }
 
+  a, button {
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+      cursor: pointer;
+  }
+
+  .btn-hero-primary,
+  .btn-hero-ghost,
+  .btn-cta-white,
+  .btn-cta-outline,
+  .nav-cta {
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+  }
+
   /* ── Mobile ── */
   @media (max-width: 900px) {
-    nav { padding: 24px 24px; }
+        nav { padding: 20px 24px; }
+
     .nav-links { display: none; }
-    .hero { padding: 120px 24px 180px; }
-    .hero-stats { left: 24px; right: 24px; bottom: 40px; flex-wrap: wrap; gap: 24px; }
-    .hero-stat + .hero-stat { border-left: none; padding-left: 0; }
-    .blood-drop { display: none; }
-    .section-how, .section-types, .section-trust, .section-cta { padding: 80px 24px; }
-    .steps-grid { grid-template-columns: 1fr; }
-    .blood-types-grid { grid-template-columns: repeat(4, 1fr); }
-    .trust-grid { grid-template-columns: 1fr; gap: 48px; }
-    .types-header { flex-direction: column; gap: 24px; }
-    footer { flex-direction: column; gap: 24px; text-align: center; }
+
+    /* Add a visible mobile CTA button */
+    .nav-mobile-cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
   }
 </style>
 </head>
@@ -931,17 +954,21 @@
 
 <!-- NAV -->
 <nav>
-  <div class="nav-logo">
-    <span class="nav-logo-text">Wareed</span>
-    <span class="nav-logo-dot"></span>
-  </div>
-  <ul class="nav-links">
-    <li><a href="#how">How it works</a></li>
-    <li><a href="#blood-types">Blood types</a></li>
-    <li><a href="#trust">Trust</a></li>
-    <li><a href="{{ route('hospital.login') }}">Hospitals</a></li>
-    <li><a href="{{ route('login') }}" class="nav-cta">Donate now</a></li>
-  </ul>
+    <div class="nav-logo">
+        <span class="nav-logo-text">Wareed</span>
+        <span class="nav-logo-dot"></span>
+    </div>
+    <ul class="nav-links">
+        <li><a href="#how">How it works</a></li>
+        <li><a href="#blood-types">Blood types</a></li>
+        <li><a href="#trust">Trust</a></li>
+        <li><a href="{{ route('hospital.login') }}">Hospitals</a></li>
+        <li><a href="{{ route('login') }}" class="nav-cta">Donate now</a></li>
+    </ul>
+    <!-- Visible on mobile only -->
+    <a href="{{ route('login') }}" class="nav-cta nav-mobile-cta">
+        Donate now
+    </a>
 </nav>
 
 <!-- HERO -->
@@ -1270,6 +1297,30 @@
   }, { threshold: 0.12 });
 
   reveals.forEach(el => observer.observe(el));
+
+  // Fix iOS PWA navigation — prevents full page reload on anchor clicks
+    if (window.navigator.standalone) {
+        document.addEventListener('click', function (e) {
+            const target = e.target.closest('a');
+            if (!target) return;
+            if (!target.href) return;
+            if (target.href.includes('#')) return;
+            if (!target.href.startsWith(window.location.origin)) return;
+
+            e.preventDefault();
+            window.location.href = target.href;
+        });
+    }
+
+    // Fix double-tap zoom on iOS breaking button taps
+    let lastTouchEnd = 0;
+    document.addEventListener('touchend', function (e) {
+        const now = Date.now();
+        if (now - lastTouchEnd <= 300) {
+            e.preventDefault();
+        }
+        lastTouchEnd = now;
+    }, { passive: false });
 </script>
 
 </body>
