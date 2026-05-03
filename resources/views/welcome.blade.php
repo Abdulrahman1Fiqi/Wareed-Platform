@@ -936,6 +936,9 @@
   @media (max-width: 900px) {
         nav { padding: 20px 24px; }
 
+    body { cursor: auto; }
+    .cursor, .cursor-ring { display: none; }
+
     .nav-links { display: none; }
 
     /* Add a visible mobile CTA button */
@@ -1316,7 +1319,7 @@
     let lastTouchEnd = 0;
     document.addEventListener('touchend', function (e) {
         const now = Date.now();
-        if (now - lastTouchEnd <= 300) {
+        if (now - lastTouchEnd <= 300 && e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
             e.preventDefault();
         }
         lastTouchEnd = now;
