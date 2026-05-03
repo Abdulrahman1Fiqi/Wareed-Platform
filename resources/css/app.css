@@ -31,4 +31,51 @@
     .status-critical  { @apply bg-red-100 text-red-700 text-xs font-medium px-2 py-1 rounded-full; }
     .status-urgent    { @apply bg-orange-100 text-orange-700 text-xs font-medium px-2 py-1 rounded-full; }
     .status-standard  { @apply bg-yellow-100 text-yellow-700 text-xs font-medium px-2 py-1 rounded-full; }
+
+    /* Mobile touch fixes */
+    button,
+    a,
+    [role="button"],
+    input[type="submit"],
+    input[type="button"] {
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+        cursor: pointer;
+    }
+
+    /* Minimum tap target size for mobile */
+    .btn-primary,
+    .btn-secondary,
+    .btn-danger {
+        min-height: 44px;
+        min-width: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Fix iOS input styling */
+    input,
+    select,
+    textarea {
+        -webkit-appearance: none;
+        border-radius: 0.5rem;
+    }
+
+    /* Prevent text size adjustment on orientation change */
+    html {
+        -webkit-text-size-adjust: 100%;
+        text-size-adjust: 100%;
+    }
+
+    /* Fix iOS momentum scrolling */
+    .overflow-y-auto,
+    .overflow-auto {
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Fix fixed positioning on iOS Safari */
+    body {
+        position: relative;
+    }
 }

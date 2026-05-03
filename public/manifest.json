@@ -1,12 +1,14 @@
 {
     "name": "Wareed — Blood Donation Network",
     "short_name": "Wareed",
-    "description": "Connecting hospitals and donors in real time",
+    "description": "Connecting hospitals and donors in real time across Egypt",
     "start_url": "/",
+    "scope": "/",
     "display": "standalone",
-    "background_color": "#ffffff",
+    "background_color": "#1A0503",
     "theme_color": "#C0392B",
-    "orientation": "portrait",
+    "orientation": "portrait-primary",
+    "lang": "en",
     "icons": [
         {
             "src": "/icons/icon-192.png",
@@ -19,6 +21,20 @@
             "sizes": "512x512",
             "type": "image/png",
             "purpose": "any maskable"
+        }
+    ],
+    "screenshots": [],
+    "categories": ["health", "medical", "utilities"],
+    "shortcuts": [
+        {
+            "name": "Dashboard",
+            "url": "/donor/dashboard",
+            "description": "Go to donor dashboard"
+        },
+        {
+            "name": "Notifications",
+            "url": "/donor/notifications",
+            "description": "View notifications"
         }
     ]
 }
