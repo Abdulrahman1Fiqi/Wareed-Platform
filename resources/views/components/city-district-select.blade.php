@@ -1,3 +1,5 @@
+<script src="/js/egypt-cities.js"></script>
+
 <div x-data="cityDistrict('{{ $selectedCity }}', '{{ $selectedDistrict }}')" x-init="init()">
 
     <div>
@@ -35,7 +37,7 @@
 
 </div>
 
-<script src="/js/egypt-cities.js"></script>
+
 <script>
 function cityDistrict(preselectedCity, preselectedDistrict) {
     return {

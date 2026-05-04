@@ -1,4 +1,7 @@
 import './echo';
+import Alpine from 'alpinejs';
+window.Alpine = Alpine;
+Alpine.start();
 
 // Register service worker
 if ('serviceWorker' in navigator) {
