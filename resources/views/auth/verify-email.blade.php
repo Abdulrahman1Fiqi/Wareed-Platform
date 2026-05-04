@@ -36,5 +36,19 @@
             </form>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('click', function (e) {
+            const target = e.target.closest('a');
+            if (!target || !target.href) return;
+            if (target.href.includes('#')) return;
+            if (!target.href.startsWith(window.location.origin)) return;
+            if (window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches) {
+                e.preventDefault();
+                window.location.href = target.href;
+            }
+        });
+    </script>
+
 </body>
 </html>

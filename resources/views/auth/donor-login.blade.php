@@ -23,7 +23,7 @@
                 </div>
             @endif
 
-            <form method="POST" action="/login" class="space-y-4">
+            <form method="POST" action="{{ route('login') }}" class="space-y-4">
                 @csrf
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
@@ -39,15 +39,29 @@
             </form>
 
             <p class="text-center text-sm text-gray-500 mt-4">
-                No account? <a href="/register/donor" class="text-blood-500 font-medium">Register as Donor</a>
+                No account? <a href="{{ route('register') }}" class="text-blood-500 font-medium">Register as Donor</a>
             </p>
             <p class="text-center text-sm text-gray-500 mt-1">
-                Hospital? <a href="/hospital/login" class="text-blood-500 font-medium">Hospital Login</a>
+                Hospital? <a href="{{ route('hospital.login') }}" class="text-blood-500 font-medium">Hospital Login</a>
             </p>
             <p class="text-center text-sm text-gray-500 mt-1">
                 Admin? <a href="/admin/login" class="text-blood-500 font-medium">Admin Login</a>
             </p>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('click', function (e) {
+            const target = e.target.closest('a');
+            if (!target || !target.href) return;
+            if (target.href.includes('#')) return;
+            if (!target.href.startsWith(window.location.origin)) return;
+            if (window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches) {
+                e.preventDefault();
+                window.location.href = target.href;
+            }
+        });
+    </script>
+
 </body>
 </html>

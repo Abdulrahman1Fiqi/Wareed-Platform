@@ -27,7 +27,7 @@
                 </div>
             @endif
 
-            <form method="POST" action="/hospital/login" class="space-y-4">
+            <form method="POST" action="{{ route('hospital.login') }}" class="space-y-4">
                 @csrf
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Official Email</label>
@@ -50,5 +50,19 @@
             </p>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('click', function (e) {
+            const target = e.target.closest('a');
+            if (!target || !target.href) return;
+            if (target.href.includes('#')) return;
+            if (!target.href.startsWith(window.location.origin)) return;
+            if (window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches) {
+                e.preventDefault();
+                window.location.href = target.href;
+            }
+        });
+    </script>
+    
 </body>
 </html>

@@ -25,7 +25,7 @@
                 </div>
             @endif
 
-            <form method="POST" action="/register/hospital" class="space-y-4">
+            <form method="POST" action="{{ route('hospital.register') }}" class="space-y-4">
                 @csrf
 
                 <div>
@@ -74,9 +74,23 @@
             </form>
 
             <p class="text-center text-sm text-gray-500 mt-4">
-                Already registered? <a href="/hospital/login" class="text-blood-500 font-medium">Login</a>
+                Already registered? <a href="{{ route('hospital.login') }}" class="text-blood-500 font-medium">Login</a>
             </p>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('click', function (e) {
+            const target = e.target.closest('a');
+            if (!target || !target.href) return;
+            if (target.href.includes('#')) return;
+            if (!target.href.startsWith(window.location.origin)) return;
+            if (window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches) {
+                e.preventDefault();
+                window.location.href = target.href;
+            }
+        });
+    </script>
+
 </body>
 </html>

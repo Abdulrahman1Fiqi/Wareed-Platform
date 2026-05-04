@@ -170,6 +170,7 @@
     inset: 0;
     z-index: 0;
     overflow: hidden;
+    pointer-events: none;
   }
 
   .hero-bg-circle {
@@ -186,6 +187,7 @@
       transparent 70%
     );
     animation: breathe 8s ease-in-out infinite;
+    pointer-events: none;
   }
 
   .hero-bg-lines {
@@ -195,6 +197,7 @@
       linear-gradient(rgba(192,57,43,0.04) 1px, transparent 1px),
       linear-gradient(90deg, rgba(192,57,43,0.04) 1px, transparent 1px);
     background-size: 80px 80px;
+    pointer-events: none;
   }
 
   .hero-drip {
@@ -221,7 +224,7 @@
   /* Hero content */
   .hero-content {
     position: relative;
-    z-index: 10;
+    z-index: 20;
     max-width: 780px;
   }
 
@@ -286,6 +289,8 @@
     gap: 32px;
     opacity: 0;
     animation: fade-up 1s ease forwards 0.8s;
+    position: relative;
+    z-index: 20;
   }
 
   .btn-hero-primary {
@@ -393,6 +398,7 @@
     z-index: 5;
     opacity: 0;
     animation: fade-in 1.5s ease forwards 1s;
+    pointer-events: none;
   }
 
   @keyframes fade-in {
@@ -934,19 +940,72 @@
 
   /* ── Mobile ── */
   @media (max-width: 900px) {
-        nav { padding: 20px 24px; }
+      nav { padding: 20px 24px; }
+      body { cursor: auto; }
+      .cursor, .cursor-ring { display: none; }
+      .nav-links { display: none; }
+      .nav-mobile-cta { display: inline-flex; align-items: center; gap: 8px; }
 
-    body { cursor: auto; }
-    .cursor, .cursor-ring { display: none; }
+      /* Hero mobile fixes */
+      .hero { padding: 120px 24px 200px; }
 
-    .nav-links { display: none; }
+      .hero-title { font-size: clamp(52px, 14vw, 80px); }
 
-    /* Add a visible mobile CTA button */
-    .nav-mobile-cta {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-    }
+      .hero-title .hero-title-line2 { padding-left: 40px; }
+
+      .hero-actions {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 16px;
+      }
+
+      .btn-hero-primary,
+      .btn-hero-ghost {
+          width: 100%;
+          justify-content: center;
+          padding: 16px 24px;
+          min-height: 52px;
+      }
+
+      .blood-drop { display: none; }
+
+      .hero-stats {
+          left: 24px;
+          right: 24px;
+          bottom: 32px;
+          flex-wrap: wrap;
+          gap: 16px;
+          padding-top: 20px;
+      }
+
+      .hero-stat { padding: 0; min-width: 40%; }
+      .hero-stat + .hero-stat { border-left: none; padding-left: 0; }
+      .hero-stat-number { font-size: 32px; }
+
+      /* Steps grid */
+      .steps-grid { grid-template-columns: 1fr; }
+
+      /* Blood types */
+      .blood-types-grid { grid-template-columns: repeat(4, 1fr); }
+
+      /* Trust */
+      .trust-grid { grid-template-columns: 1fr; gap: 48px; }
+      .types-header { flex-direction: column; gap: 24px; align-items: flex-start; }
+
+      /* CTA */
+      .section-cta { padding: 80px 24px; }
+      .cta-buttons { flex-direction: column; align-items: center; }
+      .btn-cta-white,
+      .btn-cta-outline { width: 100%; justify-content: center; }
+
+      /* Footer */
+      footer { flex-direction: column; gap: 20px; text-align: center; padding: 40px 24px; }
+      .footer-links { flex-wrap: wrap; justify-content: center; gap: 16px; }
+
+      /* Sections padding */
+      .section-how,
+      .section-types,
+      .section-trust { padding: 80px 24px; }
   }
 </style>
 </head>
@@ -1242,88 +1301,93 @@
 </footer>
 
 <script>
-  /* Custom cursor */
-  const cursor = document.getElementById('cursor');
-  const ring   = document.getElementById('cursor-ring');
-  let mx = 0, my = 0, rx = 0, ry = 0;
+  /* Custom cursor — desktop only */
+  const isMobile = window.matchMedia('(max-width: 900px)').matches || 'ontouchstart' in window;
 
-  document.addEventListener('mousemove', e => {
-    mx = e.clientX; my = e.clientY;
-    cursor.style.left = mx + 'px';
-    cursor.style.top  = my + 'px';
-  });
+  if (!isMobile) {
+      const cursor = document.getElementById('cursor');
+      const ring   = document.getElementById('cursor-ring');
+      let mx = 0, my = 0, rx = 0, ry = 0;
 
-  (function animateRing() {
-    rx += (mx - rx) * 0.12;
-    ry += (my - ry) *.12;
-    ring.style.left = rx + 'px';
-    ring.style.top  = ry + 'px';
-    requestAnimationFrame(animateRing);
-  })();
+      document.addEventListener('mousemove', e => {
+          mx = e.clientX; my = e.clientY;
+          cursor.style.left = mx + 'px';
+          cursor.style.top  = my + 'px';
+      });
 
-  document.querySelectorAll('a, button').forEach(el => {
-    el.addEventListener('mouseenter', () => {
-      cursor.style.width = '18px';
-      cursor.style.height = '18px';
-      ring.style.width = '56px';
-      ring.style.height = '56px';
-    });
-    el.addEventListener('mouseleave', () => {
-      cursor.style.width = '10px';
-      cursor.style.height = '10px';
-      ring.style.width = '36px';
-      ring.style.height = '36px';
-    });
-  });
+      (function animateRing() {
+          rx += (mx - rx) * 0.12;
+          ry += (my - ry) * 0.12;
+          ring.style.left = rx + 'px';
+          ring.style.top  = ry + 'px';
+          requestAnimationFrame(animateRing);
+      })();
+
+      document.querySelectorAll('a, button').forEach(el => {
+          el.addEventListener('mouseenter', () => {
+              cursor.style.width  = '18px';
+              cursor.style.height = '18px';
+              ring.style.width    = '56px';
+              ring.style.height   = '56px';
+          });
+          el.addEventListener('mouseleave', () => {
+              cursor.style.width  = '10px';
+              cursor.style.height = '10px';
+              ring.style.width    = '36px';
+              ring.style.height   = '36px';
+          });
+      });
+  }
 
   /* Blood drip effect */
   const hero = document.querySelector('.hero-bg');
   for (let i = 0; i < 8; i++) {
-    const drip = document.createElement('div');
-    drip.className = 'hero-drip';
-    drip.style.left = (Math.random() * 100) + '%';
-    drip.style.height = (60 + Math.random() * 120) + 'px';
-    drip.style.animationDuration = (4 + Math.random() * 8) + 's';
-    drip.style.animationDelay = (Math.random() * 6) + 's';
-    hero.appendChild(drip);
+      const drip = document.createElement('div');
+      drip.className = 'hero-drip';
+      drip.style.left            = (Math.random() * 100) + '%';
+      drip.style.height          = (60 + Math.random() * 120) + 'px';
+      drip.style.animationDuration = (4 + Math.random() * 8) + 's';
+      drip.style.animationDelay  = (Math.random() * 6) + 's';
+      hero.appendChild(drip);
   }
 
   /* Scroll reveal */
-  const reveals = document.querySelectorAll('.reveal');
+  const reveals  = document.querySelectorAll('.reveal');
   const observer = new IntersectionObserver(entries => {
-    entries.forEach((entry, i) => {
-      if (entry.isIntersecting) {
-        setTimeout(() => entry.target.classList.add('visible'), i * 80);
-        observer.unobserve(entry.target);
-      }
-    });
+      entries.forEach((entry, i) => {
+          if (entry.isIntersecting) {
+              setTimeout(() => entry.target.classList.add('visible'), i * 80);
+              observer.unobserve(entry.target);
+          }
+      });
   }, { threshold: 0.12 });
 
   reveals.forEach(el => observer.observe(el));
 
-  // Fix iOS PWA navigation — prevents full page reload on anchor clicks
-    if (window.navigator.standalone) {
-        document.addEventListener('click', function (e) {
-            const target = e.target.closest('a');
-            if (!target) return;
-            if (!target.href) return;
-            if (target.href.includes('#')) return;
-            if (!target.href.startsWith(window.location.origin)) return;
+  /* Universal mobile navigation fix */
+  document.addEventListener('click', function (e) {
+      const target = e.target.closest('a');
+      if (!target || !target.href) return;
+      if (target.href.includes('#')) return;
+      if (!target.href.startsWith(window.location.origin)) return;
 
-            e.preventDefault();
-            window.location.href = target.href;
-        });
-    }
+      /* Force navigation — fixes both iOS PWA and Android PWA */
+      if (window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches) {
+          e.preventDefault();
+          window.location.href = target.href;
+      }
+  });
 
-    // Fix double-tap zoom on iOS breaking button taps
-    let lastTouchEnd = 0;
-    document.addEventListener('touchend', function (e) {
-        const now = Date.now();
-        if (now - lastTouchEnd <= 300 && e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
-            e.preventDefault();
-        }
-        lastTouchEnd = now;
-    }, { passive: false });
+  /* Prevent double-tap zoom without blocking scroll */
+  let lastTouchEnd = 0;
+  document.addEventListener('touchend', function (e) {
+      const now = Date.now();
+      const tag  = e.target.tagName;
+      if (now - lastTouchEnd <= 300 && tag !== 'INPUT' && tag !== 'TEXTAREA' && tag !== 'SELECT') {
+          e.preventDefault();
+      }
+      lastTouchEnd = now;
+  }, { passive: false });
 </script>
 
 </body>
