@@ -1025,9 +1025,8 @@
         <li><a href="#blood-types">Blood types</a></li>
         <li><a href="#trust">Trust</a></li>
         <li><a href="{{ route('hospital.login') }}">Hospitals</a></li>
-        <li><a href="{{ route('login') }}" class="nav-cta">Donate now</a></li>
     </ul>
-    <!-- Visible on mobile only -->
+   
     <a href="{{ route('login') }}" class="nav-cta nav-mobile-cta">
         Donate now
     </a>
